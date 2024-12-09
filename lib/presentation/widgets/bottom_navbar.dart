@@ -21,6 +21,7 @@ class BottomNavbar extends StatelessWidget {
             // Navegar a otra vista
             context.go("/home/1");
             break;
+          
         }
       },
       color: Colors.white,
