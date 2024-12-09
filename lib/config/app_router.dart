@@ -3,14 +3,13 @@ import 'package:booking_app/presentation/screens/login_register/register/registe
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: "/home/0",
+  initialLocation: "/login",
   routes: [
     // Ruta para Home/Login
     GoRoute(
-      path: "/home/:view",
+      path: "/login",
       builder: (context, state) {
-        final viewIndex = int.parse(state.pathParameters["view"] ?? "0");
-        return LoginScreen(viewIndex: viewIndex);
+        return const LoginScreen();
       },
     ),
     // Ruta para Registro
@@ -20,5 +19,12 @@ final appRouter = GoRouter(
         return const RegisterScreen();
       },
     ),
+
+    /*GoRoute(path: "/home/:view",
+      builder: (context, state) {
+        final viewIndex = state.pathParameters['view'] ?? "0";
+        return HomeScreen(index: viewIndex);
+      }
+    ),*/
   ],
 );
