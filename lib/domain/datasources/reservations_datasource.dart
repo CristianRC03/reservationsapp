@@ -65,8 +65,8 @@ class ReservationsDatasource {
       final response = await dio.post('/', data: {
         'propertyId': reservation.property.id,
         'userId': reservation.user.id,
-        'startDate': reservation.startDate,
-        'endDate': reservation.endDate,
+        'startDate': reservation.startDate.toIso8601String(),
+        'endDate': reservation.endDate.toIso8601String(),
         'guests': reservation.guests,
         'totalAmount': reservation.totalAmount,
       });
@@ -86,8 +86,8 @@ class ReservationsDatasource {
       final response = await dio.put('/${reservation.id}', data: {
         'propertyId': reservation.property.id,
         'userId': reservation.user.id,
-        'startDate': reservation.startDate,
-        'endDate': reservation.endDate,
+        'startDate': reservation.startDate.toIso8601String(),
+        'endDate': reservation.endDate.toIso8601String(),
         'guests': reservation.guests,
         'totalAmount': reservation.totalAmount,
         'status': reservation.status,

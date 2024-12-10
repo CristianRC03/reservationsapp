@@ -29,7 +29,8 @@ class Reservation {
           ? Property.fromJson(json['property'])
           : Property.defaultProperty(), // Propiedad predeterminada si es nulo
       user: json['user'] != null
-          ? User.fromJson(json['user']) : User.defaultUser(), // Usuario predeterminado si es nulo
+          ? User.fromJson(json['user'])
+          : User.defaultUser(), // Usuario predeterminado si es nulo
       startDate: json['startDate'] != null
           ? DateTime.parse(json['startDate'] as String)
           : DateTime.now(), // Fecha actual si es nulo
@@ -40,6 +41,19 @@ class Reservation {
       totalAmount:
           json['totalAmount'] as double? ?? 0.0, // Total predeterminado
       status: json['status']?.toString() ?? 'pending', // Estado predeterminado
+    );
+  }
+
+  Reservation copyWith({String? status}) {
+    return Reservation(
+      id: id,
+      property: property,
+      user: user,
+      startDate: startDate,
+      endDate: endDate,
+      guests: guests,
+      totalAmount: totalAmount,
+      status: status ?? this.status,
     );
   }
 }

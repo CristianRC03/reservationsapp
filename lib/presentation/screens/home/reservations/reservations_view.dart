@@ -23,6 +23,30 @@ class _ReservationsViewState extends State<ReservationsView> {
     });
   }
 
+  Future<bool> _showConfirmationDialog(
+      BuildContext context, String title, String content) async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(title),
+              content: Text(content),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancelar'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Confirmar'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final reservationProvider = Provider.of<ReservationProvider>(context);
@@ -43,7 +67,7 @@ class _ReservationsViewState extends State<ReservationsView> {
                 _InfoCard(
                   title: 'Pendientes',
                   value: reservationProvider
-                      .countReservationsByStatus('pending', userId: userId )
+                      .countReservationsByStatus('pending', userId: userId)
                       .toString(),
                   color: Colors.orange,
                 ),
@@ -70,19 +94,94 @@ class _ReservationsViewState extends State<ReservationsView> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: reservationProvider.getReservationsByUser(userId).length,
+                itemCount:
+                    reservationProvider.getReservationsByUser(userId).length,
                 itemBuilder: (context, index) {
-                  final reservation = reservationProvider.getReservationsByUser(userId)[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(reservation.property.title),
-                      subtitle: Text(
-                          'Huéspedes: ${reservation.guests} | ${reservation.startDate.toLocal().toString().split(' ')[0]} - ${reservation.endDate.toLocal().toString().split(' ')[0]}'),
-                      leading: Icon(
-                        Icons.home,
-                        color: _getStatusColor(reservation.status),
+                  final reservation =
+                      reservationProvider.getReservationsByUser(userId)[index];
+
+                  return Dismissible(
+                    key: Key(reservation.id),
+                    background: Container(
+                      color: Colors.green,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.white),
+                          SizedBox(width: 10),
+                          Text('Confirmar',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                        ],
                       ),
-                      trailing: Text(reservation.status.capitalize()),
+                    ),
+                    secondaryBackground: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('Cancelar',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(width: 10),
+                          Icon(Icons.cancel, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    confirmDismiss: (direction) async {
+                      if (direction == DismissDirection.startToEnd) {
+                        // Deslizó hacia la derecha (Confirmar)
+                        return await _showConfirmationDialog(
+                          context,
+                          'Confirmar reservación',
+                          '¿Estás seguro de que quieres confirmar esta reservación?',
+                        );
+                      } else if (direction == DismissDirection.endToStart) {
+                        // Deslizó hacia la izquierda (Cancelar)
+                        return await _showConfirmationDialog(
+                          context,
+                          'Cancelar reservación',
+                          '¿Estás seguro de que quieres cancelar esta reservación?',
+                        );
+                      }
+                      return false;
+                    },
+                    onDismissed: (direction) async {
+                      final newStatus = direction == DismissDirection.startToEnd
+                          ? 'confirm'
+                          : 'cancelled';
+                      final updatedReservation =
+                          reservation.copyWith(status: newStatus);
+
+                      // Actualiza la reservación en el servidor
+                      await reservationProvider
+                          .updateReservation(updatedReservation);
+
+                      // Elimina la reservación de la lista local
+                      setState(() {
+                        reservationProvider.reservations
+                            .removeWhere((r) => r.id == reservation.id);
+                      });
+
+                      // Vuelve a cargar las reservaciones para reflejar los cambios en la UI
+                      await reservationProvider.getReservations();
+                    },
+                    child: Card(
+                      child: ListTile(
+                        title: Text(reservation.property.title),
+                        subtitle: Text(
+                            'Huéspedes: ${reservation.guests} | ${reservation.startDate.toLocal().toString().split(' ')[0]} - ${reservation.endDate.toLocal().toString().split(' ')[0]}'),
+                        leading: Icon(
+                          Icons.home,
+                          color: _getStatusColor(reservation.status),
+                        ),
+                        trailing: Text(reservation.status.capitalize()),
+                      ),
                     ),
                   );
                 },

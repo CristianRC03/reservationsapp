@@ -57,6 +57,7 @@ class ReservationProvider extends ChangeNotifier {
     try {
       final updatedReservation =
           await datasource.updateReservation(reservation);
+          print(updatedReservation);
       final index = reservations.indexWhere((e) => e.id == reservation.id);
       if (index != -1) {
         reservations[index] = updatedReservation;
