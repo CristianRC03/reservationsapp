@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 class PropertiesDatasource {
   Future<List<Property>> getProperties() async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       final response = await dio.get('/');
@@ -18,7 +18,7 @@ class PropertiesDatasource {
 
   Future<List<Property>> getPropertiesByUserId(String userId) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       final response = await dio.get('/host/$userId');
@@ -32,7 +32,7 @@ class PropertiesDatasource {
 
   Future<Property> getPropertyById(String id) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       final response = await dio.get('/$id');
@@ -45,7 +45,7 @@ class PropertiesDatasource {
 
   Future<Property> createProperty(Property property) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       final response = await dio.post('/', data: {
@@ -57,6 +57,7 @@ class PropertiesDatasource {
         'longitude': property.longitude,
         'availability': property.availability,
         'role': property.role,
+        'userId': property.host!.id,
       });
 
       return Property.fromJson(response.data);
@@ -68,7 +69,7 @@ class PropertiesDatasource {
 
   Future<Property> updateProperty(Property property) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       final response = await dio.put('/${property.id}', data: {
@@ -91,7 +92,7 @@ class PropertiesDatasource {
 
   Future<void> deleteProperty(String id) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/properties';
 
     try {
       await dio.delete('/$id');

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 class ReservationsDatasource {
   Future<List<Reservation>> getReservations() async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       final response = await dio.get('/');
@@ -18,7 +18,7 @@ class ReservationsDatasource {
 
   Future<List<Reservation>> getReservationsByProperty(String propertyId) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       final response = await dio.get('/property/$propertyId');
@@ -32,7 +32,7 @@ class ReservationsDatasource {
 
   Future<List<Reservation>> getPropertiesByUserId(String userId) async {
     final dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/property';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/property';
 
     try {
       final response = await dio.get('/user/$userId');
@@ -46,7 +46,7 @@ class ReservationsDatasource {
 
   Future<Reservation> getReservationById(String id) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       final response = await dio.get('/$id');
@@ -59,7 +59,7 @@ class ReservationsDatasource {
 
   Future<Reservation> createReservation(Reservation reservation) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       final response = await dio.post('/', data: {
@@ -80,7 +80,7 @@ class ReservationsDatasource {
 
   Future<Reservation> updateReservation(Reservation reservation) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       final response = await dio.put('/${reservation.id}', data: {
@@ -102,7 +102,7 @@ class ReservationsDatasource {
 
   Future<void> deleteReservation(String id) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/bookings';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/bookings';
 
     try {
       await dio.delete('/$id');

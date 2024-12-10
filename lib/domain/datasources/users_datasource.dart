@@ -7,7 +7,7 @@ class UsersDatasource {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token') ?? '';
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/user';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/user';
     // Agregar el token de autenticación
     dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -25,7 +25,7 @@ class UsersDatasource {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token') ?? '';
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/user';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/user';
     // Agregar el token de autenticación
     dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -42,7 +42,7 @@ class UsersDatasource {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token') ?? '';
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/user';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/user';
     // Agregar el token de autenticación
     dio.options.headers['Authorization'] = 'Bearer $token';
 

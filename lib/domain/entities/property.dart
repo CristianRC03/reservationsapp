@@ -28,27 +28,26 @@ class Property {
 
   factory Property.fromJson(Map<String, dynamic> json) {
     return Property(
-      id: json['_id']?.toString() ?? '', // ID predeterminado vacío
-      title: json['title']?.toString() ?? 'Sin título', // Título predeterminado
-      description: json['description']?.toString() ??
-          'Sin descripción', // Descripción predeterminada
-      address: json['address']?.toString() ??
-          'Sin dirección', // Dirección predeterminada
-      pricePerNight: (json['pricePerNight'] as num?)?.toDouble() ??
-          0.0, // Precio por noche predeterminado
+      id: json['_id']?.toString() ?? '',
+      title: json['title']?.toString() ?? 'Sin título',
+      description: json['description']?.toString() ?? 'Sin descripción',
+      address: json['address']?.toString() ?? 'Sin dirección',
+      pricePerNight: (json['pricePerNight'] as num?)?.toDouble() ?? 0.0,
       host: json['host'] != null
           ? User.fromJson(json['host'])
-          : User.defaultUser(), // Usuario predeterminado si es nulo
-      latitude: (json['latitude'] as num?)?.toDouble() ??
-          0.0, // Latitud predeterminada
-      longitude: (json['longitude'] as num?)?.toDouble() ??
-          0.0, // Longitud predeterminada
+          : User.defaultUser(),
+      latitude: json['latitude'] != null
+          ? double.tryParse(json['latitude'].toString()) ?? 0.0
+          : 0.0,
+      longitude: json['longitude'] != null
+          ? double.tryParse(json['longitude'].toString()) ?? 0.0
+          : 0.0,
       availability: json['availability'] != null
           ? (json['availability'] as List<dynamic>)
               .map((e) => Avialability.fromJson(e))
               .toList()
-          : [], // Lista vacía si es nulo
-      role: json['role']?.toString() ?? 'guest', // Rol predeterminado
+          : [],
+      role: json['role']?.toString() ?? 'guest',
     );
   }
 
