@@ -24,14 +24,22 @@ class Reservation {
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
     return Reservation(
-      id: json['_id'] as String,
-      property: Property.fromJson(json['property']),
-      user: User.fromJson(json['user']),
-      startDate: DateTime.parse(json['startDate'] as String),
-      endDate: DateTime.parse(json['endDate'] as String),
-      guests: json['guests'] as int,
-      totalAmount: json['totalAmount'] as double,
-      status: json['status'] as String,
+      id: json['_id']?.toString() ?? '', // ID predeterminado vacío
+      property: json['property'] != null
+          ? Property.fromJson(json['property'])
+          : Property.defaultProperty(), // Propiedad predeterminada si es nulo
+      user: json['user'] != null
+          ? User.fromJson(json['user']) : User.defaultUser(), // Usuario predeterminado si es nulo
+      startDate: json['startDate'] != null
+          ? DateTime.parse(json['startDate'] as String)
+          : DateTime.now(), // Fecha actual si es nulo
+      endDate: json['endDate'] != null
+          ? DateTime.parse(json['endDate'] as String)
+          : DateTime.now(), // Fecha actual si es nulo
+      guests: json['guests'] as int? ?? 0, // Número de invitados predeterminado
+      totalAmount:
+          json['totalAmount'] as double? ?? 0.0, // Total predeterminado
+      status: json['status']?.toString() ?? 'pending', // Estado predeterminado
     );
   }
 }
