@@ -1,6 +1,7 @@
 import 'package:booking_app/domain/providers/reservation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReservationsView extends StatefulWidget {
   const ReservationsView({super.key});
@@ -10,10 +11,13 @@ class ReservationsView extends StatefulWidget {
 }
 
 class _ReservationsViewState extends State<ReservationsView> {
+  var userId = '';
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      userId = prefs.getString('userId') ?? '';
       final provider = Provider.of<ReservationProvider>(context, listen: false);
       provider.getReservations();
     });
@@ -39,21 +43,21 @@ class _ReservationsViewState extends State<ReservationsView> {
                 _InfoCard(
                   title: 'Pendientes',
                   value: reservationProvider
-                      .countReservationsByStatus('pending')
+                      .countReservationsByStatus('pending', userId: userId )
                       .toString(),
                   color: Colors.orange,
                 ),
                 _InfoCard(
                   title: 'Confirmadas',
                   value: reservationProvider
-                      .countReservationsByStatus('confirm')
+                      .countReservationsByStatus('confirm', userId: userId)
                       .toString(),
                   color: Colors.green,
                 ),
                 _InfoCard(
                   title: 'Canceladas',
                   value: reservationProvider
-                      .countReservationsByStatus('cancelled')
+                      .countReservationsByStatus('cancelled', userId: userId)
                       .toString(),
                   color: Colors.red,
                 ),
@@ -66,9 +70,9 @@ class _ReservationsViewState extends State<ReservationsView> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: reservationProvider.reservations.length,
+                itemCount: reservationProvider.getReservationsByUser(userId).length,
                 itemBuilder: (context, index) {
-                  final reservation = reservationProvider.reservations[index];
+                  final reservation = reservationProvider.getReservationsByUser(userId)[index];
                   return Card(
                     child: ListTile(
                       title: Text(reservation.property.title),
