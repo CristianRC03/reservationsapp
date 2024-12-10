@@ -21,13 +21,18 @@ class BottomNavbar extends StatelessWidget {
             // Navegar a otra vista
             context.go("/home/1");
             break;
+          case 2:
+            // Navegar a otra vista
+            context.go("/home/2");
+            break;
           
         }
       },
       color: Colors.white,
-      items: [
+      items: const [
         Icon(Icons.home, color: Colors.black),
         Icon(Icons.map_outlined, color: Colors.black),
+        Icon(Icons.home_work_outlined, color: Colors.black),
       ],
     );
   }
