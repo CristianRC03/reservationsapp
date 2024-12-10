@@ -1,6 +1,6 @@
 import 'package:booking_app/config/app_router.dart';
 import 'package:booking_app/domain/datasources/reservations_datasource.dart';
-import 'package:booking_app/domain/provider/reservation_provider.dart';
+import 'package:booking_app/domain/providers/reservation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
