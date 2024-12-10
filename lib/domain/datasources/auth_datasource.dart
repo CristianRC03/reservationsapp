@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthDatasource {
   Future<bool> login(String email, String password) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/user';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/user';
 
     try {
       final response = await dio.post('/login', data: {
@@ -35,9 +35,9 @@ class AuthDatasource {
   }
 
   Future<void> register(
-      String name, String email, String password, String phone) async {
+      String name, String email, String password, String phone, String role) async {
     var dio = Dio();
-    dio.options.baseUrl = 'https://reservation-api.ddns.net/api/user';
+    dio.options.baseUrl = 'https://reservations-api.ddns.net/api/user';
 
     try {
       final response = await dio.post('/users', data: {
@@ -45,6 +45,7 @@ class AuthDatasource {
         'email': email,
         'password': password,
         'phone': phone,
+        'role': role,
       });
 
       final String token = response.data;

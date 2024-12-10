@@ -50,6 +50,7 @@ class _ReservationsViewState extends State<ReservationsView> {
   @override
   Widget build(BuildContext context) {
     final reservationProvider = Provider.of<ReservationProvider>(context);
+    reservationProvider.getReservations();
 
     return SafeArea(
       child: Padding(

@@ -11,6 +11,7 @@ class RegisterView extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
+    final phoneController = TextEditingController();
     final roles = ['user', 'host'];
     String selectedRole = 'user';
 
@@ -73,6 +74,17 @@ class RegisterView extends StatelessWidget {
               obscureText: true,
             ),
             const SizedBox(height: 16),
+            // Campo de texto para el teléfono
+            TextField(
+              controller: phoneController,
+              decoration: const InputDecoration(
+                labelText: 'Teléfono',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.phone),
+              ),
+              keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 16),
             // Dropdown para seleccionar el rol
             DropdownButtonFormField(
               value: selectedRole,
@@ -84,7 +96,9 @@ class RegisterView extends StatelessWidget {
                   .toList(),
               onChanged: (value) {
                 // Actualizar el rol seleccionado
+                print(value);
                 selectedRole = value ?? 'user';
+                print(selectedRole);
               },
               decoration: InputDecoration(
                 labelText: 'Rol',
@@ -98,6 +112,7 @@ class RegisterView extends StatelessWidget {
               onPressed: () async {
                 final email = emailController.text;
                 final password = passwordController.text;
+                final phone = phoneController.text;
                 final confirmPassword = confirmPasswordController.text;
 
                 // Validación simple
@@ -122,6 +137,7 @@ class RegisterView extends StatelessWidget {
                     nameController.text,
                     email,
                     password,
+                    phone,
                     selectedRole,
                   );
                   GoRouter.of(context).go('/home/0');
