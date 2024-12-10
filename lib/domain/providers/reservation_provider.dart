@@ -78,4 +78,9 @@ class ReservationProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+  // Obtener reservaciones asociadas a una propiedad específica
+List<Reservation> findReservationsByProperty(String propertyId) {
+  return reservations.where((reservation) => reservation.property.id == propertyId).toList();
+}
 }

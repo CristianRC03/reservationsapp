@@ -160,7 +160,7 @@ class _ReservationsViewState extends State<ReservationsView> {
                           reservation.copyWith(status: newStatus);
 
                       // Actualiza la reservación en el servidor
-                      await reservationProvider
+                      reservationProvider
                           .updateReservation(updatedReservation);
 
                       // Elimina la reservación de la lista local
@@ -170,7 +170,7 @@ class _ReservationsViewState extends State<ReservationsView> {
                       });
 
                       // Vuelve a cargar las reservaciones para reflejar los cambios en la UI
-                      await reservationProvider.getReservations();
+                      reservationProvider.getReservations();
                     },
                     child: Card(
                       child: ListTile(
