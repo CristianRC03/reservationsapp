@@ -1,3 +1,5 @@
+import 'package:booking_app/presentation/screens/home/home_screen.dart';
+
 import 'package:booking_app/presentation/screens/login_register/login/login_screen.dart';
 import 'package:booking_app/presentation/screens/login_register/register/register_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -19,12 +21,14 @@ final appRouter = GoRouter(
         return const RegisterScreen();
       },
     ),
+    
 
-    /*GoRoute(path: "/home/:view",
+
+    GoRoute(path: "/home/:view",
       builder: (context, state) {
         final viewIndex = state.pathParameters['view'] ?? "0";
-        return HomeScreen(index: viewIndex);
+        return HomeScreen(viewIndex: int.parse(viewIndex));
       }
-    ),*/
+    ),
   ],
 );
