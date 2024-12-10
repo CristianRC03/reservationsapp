@@ -62,7 +62,7 @@ class LoginView extends StatelessWidget {
                     ),
                   );
                 } else {
-                  /*try {
+                  try {
                     // Iniciar sesión
                     AuthDatasource authDatasource = AuthDatasource();
                     await authDatasource.login(email, password);
@@ -74,8 +74,7 @@ class LoginView extends StatelessWidget {
                         content: Text('Correo o contraseña incorrectos.'),
                       ),
                     );
-                  }*/
-                  GoRouter.of(context).go('/home/0');
+                  }
                 }
               },
               child: const Text('Iniciar Sesión'),

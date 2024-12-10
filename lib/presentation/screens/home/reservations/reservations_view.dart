@@ -1,4 +1,4 @@
-import 'package:booking_app/domain/provider/reservation_provider.dart';
+import 'package:booking_app/domain/providers/reservation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,39 +22,48 @@ class _ReservationsViewState extends State<ReservationsView> {
   @override
   Widget build(BuildContext context) {
     final reservationProvider = Provider.of<ReservationProvider>(context);
-    reservationProvider.getReservations();
 
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const Text('Reservaciones',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text(
+              'Reservaciones',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _InfoCard(
                   title: 'Pendientes',
-                  value: reservationProvider.pendingReservation.toString(),
+                  value: reservationProvider
+                      .countReservationsByStatus('pending')
+                      .toString(),
                   color: Colors.orange,
                 ),
                 _InfoCard(
                   title: 'Confirmadas',
-                  value: reservationProvider.confirmedReservation.toString(),
+                  value: reservationProvider
+                      .countReservationsByStatus('confirm')
+                      .toString(),
                   color: Colors.green,
                 ),
                 _InfoCard(
                   title: 'Canceladas',
-                  value: reservationProvider.cancelledReservation.toString(),
+                  value: reservationProvider
+                      .countReservationsByStatus('cancelled')
+                      .toString(),
                   color: Colors.red,
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            const Text('Últimas Reservaciones',
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+            const Text(
+              'Últimas Reservaciones',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: reservationProvider.reservations.length,
@@ -118,7 +127,8 @@ class _InfoCard extends StatelessWidget {
         children: [
           Text(
             value,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color),
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: color),
           ),
           Text(title, style: const TextStyle(fontSize: 16)),
         ],
